@@ -1,6 +1,6 @@
 package net.zetaeta.settlement.commands;
 
-import static net.zetaeta.libraries.Util.removeFirstIndex;
+import static net.zetaeta.pluginlib.Util.removeFirstIndex;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.libraries.Util;
-import net.zetaeta.libraries.commands.DynamicCommandExecutor;
-import net.zetaeta.libraries.commands.local.LocalCommand;
-import net.zetaeta.libraries.commands.local.LocalCommandExecutor;
-import net.zetaeta.libraries.util.ReflectionUtil;
+import net.zetaeta.pluginlib.Util;
+import net.zetaeta.pluginlib.commands.DynamicCommandExecutor;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.commands.local.LocalCommandExecutor;
+import net.zetaeta.pluginlib.util.ReflectionUtil;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.SettlementThreadManager;
 import net.zetaeta.settlement.commands.settlement.Bypass;
@@ -84,7 +84,7 @@ public class SettlementCommandsManager extends DynamicCommandExecutor implements
      * @return Whether command completes (unused).
      */
     
-    @net.zetaeta.libraries.commands.Command(value = "settlement",
+    @net.zetaeta.pluginlib.commands.Command(value = "settlement",
                                             aliases = {"s", "set"},
                                             usage = "",
                                             description = ""
@@ -154,7 +154,7 @@ public class SettlementCommandsManager extends DynamicCommandExecutor implements
         for (Method m : executorClass.getDeclaredMethods()) {
             for (Annotation a : m.getAnnotations()) {
             }
-            if (m.isAnnotationPresent(net.zetaeta.libraries.commands.local.Command.class)) {
+            if (m.isAnnotationPresent(net.zetaeta.pluginlib.commands.local.Command.class)) {
                 registered.add(registerSubCommand(new SettlementExecutorWrapper(this, executor, m)));
             }
             else {

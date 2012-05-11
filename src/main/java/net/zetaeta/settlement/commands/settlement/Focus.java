@@ -1,8 +1,8 @@
 package net.zetaeta.settlement.commands.settlement;
 
-import net.zetaeta.libraries.Util;
-import net.zetaeta.libraries.commands.CommandArguments;
-import net.zetaeta.libraries.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.Util;
+import net.zetaeta.pluginlib.commands.CommandArguments;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;
 import net.zetaeta.settlement.object.SettlementPlayer;

@@ -1,10 +1,10 @@
 package net.zetaeta.settlement.commands.settlement;
 
 import static net.zetaeta.settlement.util.SettlementMessenger.sendSettlementMessage;
-import net.zetaeta.libraries.commands.CommandArguments;
-import net.zetaeta.libraries.commands.local.LocalCommand;
-import net.zetaeta.libraries.util.PermissionUtil;
-import net.zetaeta.libraries.util.StringUtil;
+import net.zetaeta.pluginlib.commands.CommandArguments;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.util.PermissionUtil;
+import net.zetaeta.pluginlib.util.StringUtil;
 import net.zetaeta.settlement.Rank;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;

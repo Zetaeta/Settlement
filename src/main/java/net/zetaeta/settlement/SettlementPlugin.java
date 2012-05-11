@@ -6,16 +6,14 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.zetaeta.libraries.ManagedJavaPlugin;
-import net.zetaeta.libraries.commands.CommandsManager;
+import net.zetaeta.pluginlib.ManagedJavaPlugin;
+import net.zetaeta.pluginlib.commands.CommandsManager;
 import net.zetaeta.settlement.commands.SettlementCommandsManager;
 import net.zetaeta.settlement.listeners.SettlementBlockListener;
 import net.zetaeta.settlement.listeners.SettlementPlayerListener;
 import net.zetaeta.settlement.listeners.SettlementWorldListener;
 import net.zetaeta.settlement.object.SettlementServer;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 

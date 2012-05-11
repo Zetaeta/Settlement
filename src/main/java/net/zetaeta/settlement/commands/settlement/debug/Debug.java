@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import net.zetaeta.libraries.Util;
-import net.zetaeta.libraries.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.Util;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.util.SettlementUtil;
 

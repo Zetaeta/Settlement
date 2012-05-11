@@ -3,11 +3,11 @@ package net.zetaeta.settlement.commands;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import net.zetaeta.libraries.commands.CommandArguments;
-import net.zetaeta.libraries.commands.local.ExecutorWrapper;
-import net.zetaeta.libraries.commands.local.LocalCommand;
-import net.zetaeta.libraries.commands.local.LocalCommandExecutor;
-import net.zetaeta.libraries.util.PermissionUtil;
+import net.zetaeta.pluginlib.commands.CommandArguments;
+import net.zetaeta.pluginlib.commands.local.ExecutorWrapper;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.commands.local.LocalCommandExecutor;
+import net.zetaeta.pluginlib.util.PermissionUtil;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.SettlementThreadManager;
 import net.zetaeta.settlement.util.SettlementMessenger;

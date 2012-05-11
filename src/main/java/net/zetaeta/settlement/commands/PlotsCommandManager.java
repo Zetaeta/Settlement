@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.libraries.Util;
-import net.zetaeta.libraries.commands.DynamicCommandExecutor;
-import net.zetaeta.libraries.commands.local.LocalCommand;
-import net.zetaeta.libraries.commands.local.LocalCommandExecutor;
+import net.zetaeta.pluginlib.Util;
+import net.zetaeta.pluginlib.commands.DynamicCommandExecutor;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.commands.local.LocalCommandExecutor;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.util.SettlementMessenger;
 
@@ -84,7 +84,7 @@ public class PlotsCommandManager extends DynamicCommandExecutor implements Local
         for (Method m : executorClass.getDeclaredMethods()) {
             for (Annotation a : m.getAnnotations()) {
             }
-            if (m.isAnnotationPresent(net.zetaeta.libraries.commands.local.Command.class)) {
+            if (m.isAnnotationPresent(net.zetaeta.pluginlib.commands.local.Command.class)) {
                 registered.add(registerSubCommand(new SettlementExecutorWrapper(this, executor, m)));
             }
             else {

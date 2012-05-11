@@ -2,9 +2,9 @@ package net.zetaeta.settlement.commands.settlement;
 
 import java.util.ArrayList;
 
-import net.zetaeta.libraries.commands.local.LocalCommand;
-import net.zetaeta.libraries.util.PermissionUtil;
-import net.zetaeta.libraries.util.StringUtil;
+import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.pluginlib.util.PermissionUtil;
+import net.zetaeta.pluginlib.util.StringUtil;
 import net.zetaeta.settlement.SettlementThreadManager;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;

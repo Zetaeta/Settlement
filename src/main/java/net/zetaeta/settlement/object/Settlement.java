@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.libraries.util.StringUtil;
+import net.zetaeta.pluginlib.util.StringUtil;
 import net.zetaeta.settlement.ConfigurationConstants;
 import net.zetaeta.settlement.Rank;
 import net.zetaeta.settlement.SettlementConstants;
