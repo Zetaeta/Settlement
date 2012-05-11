@@ -1,6 +1,6 @@
 package net.zetaeta.settlement.commands.settlement.debug;
 
-import net.zetaeta.pluginlib.commands.local.LocalCommand;
+import net.zetaeta.bukkit.commands.local.LocalCommand;
 import net.zetaeta.settlement.Rank;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;

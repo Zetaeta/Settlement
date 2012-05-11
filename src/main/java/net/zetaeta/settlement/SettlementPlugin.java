@@ -6,8 +6,8 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.zetaeta.pluginlib.ManagedJavaPlugin;
-import net.zetaeta.pluginlib.commands.CommandsManager;
+import net.zetaeta.bukkit.ManagedJavaPlugin;
+import net.zetaeta.bukkit.commands.CommandsManager;
 import net.zetaeta.settlement.commands.SettlementCommandsManager;
 import net.zetaeta.settlement.listeners.SettlementBlockListener;
 import net.zetaeta.settlement.listeners.SettlementPlayerListener;
