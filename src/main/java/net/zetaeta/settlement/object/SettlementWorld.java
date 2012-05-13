@@ -93,8 +93,11 @@ public class SettlementWorld implements SettlementConstants{
         if (!file.exists()) {
             throw new IllegalArgumentException("file must exist!");
         }
+        FileInputStream fis = null;
+        DataInputStream dis = null;
         try {
-            DataInputStream dis = new DataInputStream(new FileInputStream(file));
+            fis = new FileInputStream(file);
+            dis = new DataInputStream(fis);
             int version = dis.readInt();
             if (version == 0) {
                 int count = 0;
@@ -103,7 +106,7 @@ public class SettlementWorld implements SettlementConstants{
                     try {
                         plot = FlatFileIO.loadPlotV0_0(dis);
                         ++count;
-//                        log.info("Loaded " + count + " plots");
+                        log.info("Loaded " + count + " plots");
 //                        log.info(String.valueOf(plot));
                         plots.put(plot.getCoordinates(), plot);
                     }
@@ -114,6 +117,7 @@ public class SettlementWorld implements SettlementConstants{
                             
                         }
                     }
+                    // \n
                     dis.readChar();
                 }
             }
@@ -125,44 +129,47 @@ public class SettlementWorld implements SettlementConstants{
         } catch (IOException e) {
             log.log(Level.SEVERE, "Error while loading plots file " + file.getName(), e);
         }
+        finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dis != null) {
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     
     boolean tolog = true;
     
     public void unloadPlot(ChunkCoordinate coords) {
-//        log.info("Unloading plot...");
         Plot plot = getPlot(coords);
         plot.setInUse(false);
         Collection<ChunkCoordinate> group = coords.getCoordsGroup();
         if (tolog) {
             tolog = false;
-//            log.info("CoordsGroup: " + group);
-//            log.info("All plots: " + plots);
-//            log.info("Loaded chunks: " + StringUtil.concatString(getWorld().getLoadedChunks()));
         }
-//        log.info("========CHECKING " + coords + "========");
         boolean save = true;
         for (ChunkCoordinate other : group) {
-//            log.info("Checking group member for " + coords + " at " + other);
             if (getPlot(other) == null) {
-//                log.info("Plot at " + other + " is null!");
                 continue;
             }
             if (plots.get(other).isInUse()) {
-//                log.info("Other chunk at " + other + " is in use");
                 save = false;
-            }
-            else {
-//                log.info("Other chunk at " + other + " is not in use");
             }
         }
         if (!save) {
             return;
         }
         int superChunkX = coords.x >> 2, superChunkZ = coords.z >> 2;
-//        log.info("Creating file name: x=" + coords.x + ", z=" + coords.z + " --> x=" + superChunkX + ", z=" + superChunkZ);
         File file = new File(getPlotsFolder(), "plots@" + superChunkX + "," + superChunkZ + ".dat");
-//        log.info("file = " + file.getName());
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -185,35 +192,30 @@ public class SettlementWorld implements SettlementConstants{
             if (file.length() == 0) {
                 dos.writeInt(FlatFileIO.PLOT_FILE_VERSION);
             }
-            FlatFileIO.savePlotV0_0(plot, null, dos);
+            FlatFileIO.savePlotV0_0(plot, dos);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
     public void unloadPlots(Collection<Plot> plots, File file) {
-//        log.info("unloadPlots reached!");
         if (!file.exists()) {
             throw new IllegalArgumentException("file must exist!");
         }
+        FileOutputStream fos = null;
+        DataOutputStream dos = null;
         try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(bos);
+            fos = new FileOutputStream(file);
+            dos = new DataOutputStream(fos);
             dos.writeInt(FlatFileIO.PLOT_FILE_VERSION);
             for (Plot plot : plots) {
                 if (plot == null) {
                     continue;
                 }
                 try {
-                    FlatFileIO.savePlotV0_0(plot, bos, dos);
-                    fos.write(bos.toByteArray());
-//                    log.info("Byte array length for " + plot + " IS EQUAL TO " + bos.size());
-                    bos.reset();
+                    FlatFileIO.savePlotV0_0(plot, dos);
                 }
                 catch (Throwable thrown) {
                     log.severe("Error occurred while saving plot " + (plot == null ? "" : plot.toString()) + ": " + thrown.getClass().getName());
@@ -225,6 +227,22 @@ public class SettlementWorld implements SettlementConstants{
             log.log(Level.SEVERE, "Could not load plots file " + file.getName(), e);
         } catch (IOException e) {
             log.log(Level.SEVERE, "Error while loading plots file " + file.getName(), e);
+        }
+        finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
     

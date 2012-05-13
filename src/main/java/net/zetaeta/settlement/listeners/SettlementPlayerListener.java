@@ -50,12 +50,13 @@ public class SettlementPlayerListener implements Listener, SettlementConstants {
         }
         Chunk to = event.getTo().getChunk();
         Chunk from = event.getFrom().getChunk();
+        event.getPlayer().sendMessage("Changing chunk from " + from.getX() + ", " + from.getZ() + " to " + to.getX() + ", " + to.getZ());
         Settlement owner = server.getOwnerSettlement(to);
         Settlement prev = server.getOwnerSettlement(from);
         if (owner == prev) {
             return;
         }
-        if (owner == null) {
+        if (owner == null || owner == Settlement.WILDERNESS) {
             SettlementMessenger.sendWildernessMessage(event.getPlayer());
             return;
         }

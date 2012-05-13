@@ -33,15 +33,6 @@ public class SettlementPlugin extends ManagedJavaPlugin {
     
     @Override
     public void onDisable() {
-        try {
-            System.out.println("config: keys: " + config.getKeys(true));
-//            System.out.println("config == getConfig: " + (config == getConfig()));
-//            getConfig().set("Herp.derp", "herpderp");
-            saveConfig();
-        }
-        catch(Throwable t) {
-            t.printStackTrace();
-        }
         if (ConfigurationConstants.useMultithreading && ConfigurationConstants.multithreadedShutdown) {
             SettlementThreadManager.submitAsyncTask(new Runnable() {
                 public void run() {
@@ -67,14 +58,13 @@ public class SettlementPlugin extends ManagedJavaPlugin {
         server = new SettlementServer(this);
         Future<?> settlementLoader = SettlementThreadManager.submitAsyncTask(new Runnable() {
             public void run() {
-//                server.init();
+                server.init();
             }
         });
         log.info(getDescription().getLoad().toString());
         try {
             config = getConfig();
             config.options().indent(4);
-            System.out.println("config: keys: " + config.getKeys(true));
         }
         catch (Throwable thrown) {
             thrown.printStackTrace();

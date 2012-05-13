@@ -253,7 +253,7 @@ public final class FlatFileIO implements SettlementConstants {
         }
     }
     
-    public static void savePlotV0_0(Plot plot, ByteArrayOutputStream bos, DataOutputStream dos) throws IOException {
+    public static void savePlotV0_0(Plot plot,/* ByteArrayOutputStream bos,*/ DataOutputStream dos) throws IOException {
         ChunkCoordinate cc = plot.getCoordinates();
         UUID uid = plot.getWorld().getWorld().getUID();
 //        log.info("Written none: " + bos.size());

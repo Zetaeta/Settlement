@@ -15,8 +15,8 @@ public class ChunkCoordinate {
     }
 
     public ChunkCoordinate(Chunk chunk) {
-        x = chunk.getX() >> 2;
-        z = chunk.getZ() >> 2;
+        x = chunk.getX();
+        z = chunk.getZ();
     }
     
     public ChunkCoordinate(int x, int y, int z) {
