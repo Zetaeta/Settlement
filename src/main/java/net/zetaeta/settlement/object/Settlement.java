@@ -592,12 +592,12 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
     @SuppressWarnings("static-access")
     public boolean claimLand(Player cause) {
         Chunk chunk = cause.getLocation().getChunk();
-        Settlement prevOwner = server.getOwner(chunk);
+        Settlement prevOwner = server.getOwnerSettlement(chunk);
         if (prevOwner == this) {
             SettlementMessenger.sendSettlementMessage(cause, "§a  This plot already belongs to you!");
             return false;
         }
-        if (prevOwner != null) {
+        if (prevOwner != WILDERNESS) {
             sendMessage(cause, "§c  This plot already belongs to someone else!");
             return false;
         }
@@ -616,7 +616,7 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
     @SuppressWarnings("static-access")
     public boolean unclaimLand(Player cause) {
         Chunk chunk = cause.getLocation().getChunk();
-        Settlement prevOwner = server.getOwner(chunk);
+        Settlement prevOwner = server.getOwnerSettlement(chunk);
         if (!this.equals(prevOwner)) {
             SettlementMessenger.sendSettlementMessage(cause, "§a  This plot does not belong to you!");
             return false;
@@ -631,8 +631,6 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
     
     public boolean addChunk(Chunk chunk) {
         plots.add(server.getWorld(chunk.getWorld()).getPlot(chunk));
-        if (ConfigurationConstants.useSettlementWorldCacheing) {
-        }
         return true;
     }
     

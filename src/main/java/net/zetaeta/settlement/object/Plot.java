@@ -8,14 +8,15 @@ public class Plot implements SettlementConstants {
     private ChunkCoordinate location;
     private SettlementWorld world;
     private Settlement ownerSettlement;
-//    private SettlementPlayer ownerPlayer;
     private String ownerPlayerName;
+    private boolean inUse = true;
     
     public Plot(SettlementWorld world, ChunkCoordinate cc) {
         this.world = world;
         this.location = cc;
         ownerSettlement = Settlement.WILDERNESS;
-        ownerPlayerName = "";
+        ownerPlayerName = SettlementPlayer.NONE.getName();
+//        log.info("Creating plot " + toString());
     }
     
     public Chunk getChunk() {
@@ -31,7 +32,14 @@ public class Plot implements SettlementConstants {
     }
     
     public SettlementPlayer getOwnerPlayer() {
+        if (ownerPlayerName == SettlementPlayer.NONE.getName()) {
+            return SettlementPlayer.NONE;
+        }
         return server.getSettlementPlayer(ownerPlayerName);
+    }
+    
+    public String getOwnerPlayerName() {
+        return ownerPlayerName;
     }
     
     public void setOwnerPlayer(SettlementPlayer owner) {
@@ -49,5 +57,16 @@ public class Plot implements SettlementConstants {
     public SettlementWorld getWorld() {
         return world;
     }
-
+    
+    public void setInUse(boolean save) {
+        inUse = save;
+    }
+    
+    public boolean isInUse() {
+        return inUse;
+    }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " at " + location + ", settlement owner = " + ownerSettlement.getName() + ", player owner = " + ownerPlayerName;
+    }
 }

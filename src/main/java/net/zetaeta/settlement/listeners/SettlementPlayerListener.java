@@ -50,8 +50,8 @@ public class SettlementPlayerListener implements Listener, SettlementConstants {
         }
         Chunk to = event.getTo().getChunk();
         Chunk from = event.getFrom().getChunk();
-        Settlement owner = server.getOwner(to);
-        Settlement prev = server.getOwner(from);
+        Settlement owner = server.getOwnerSettlement(to);
+        Settlement prev = server.getOwnerSettlement(from);
         if (owner == prev) {
             return;
         }

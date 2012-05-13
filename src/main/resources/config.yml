@@ -1,0 +1,16 @@
+technical:
+    multithreading:
+        normalUse: true
+        shutdown: false
+        
+appearance:
+    names:
+        ranks:
+            owner: Owner
+            moderator: Moderator
+            member: Member
+    messages:
+        enter_settlement: 
+        wilderness: "§b~ §6Wilderness"
+        deny_build: "§cYou are not allowed to build in the Settlement §6%s"
+        deny_break: "§cYou are not allowed to destroy in the Settlement §6%s"

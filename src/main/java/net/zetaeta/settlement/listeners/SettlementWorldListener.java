@@ -14,7 +14,7 @@ public class SettlementWorldListener implements Listener, SettlementConstants {
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkLoad(final ChunkLoadEvent event) {
-        log.info("Loaded chunk!");
+//        log.info("ChunkLoadEvent: " + event.getEventName());
         SettlementThreadManager.submitAsyncTask(new Runnable() {
             public void run() {
                 server.getWorld(event.getWorld()).loadPlot(new ChunkCoordinate(event.getChunk()));
@@ -22,8 +22,9 @@ public class SettlementWorldListener implements Listener, SettlementConstants {
         });
     }
     
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkUnload(final ChunkUnloadEvent event) {
-        log.info("Unloaded chunk!");
+//        log.info("ChunkUnloadEvent: " + event.getEventName());
         SettlementThreadManager.submitAsyncTask(new Runnable() {
             public void run() {
                 server.getWorld(event.getWorld()).unloadPlot(new ChunkCoordinate(event.getChunk()));

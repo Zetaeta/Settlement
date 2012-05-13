@@ -174,7 +174,7 @@ public class Set extends SettlementCommand implements LocalCommandExecutor, Sett
             return true;
         }
         if (PermissionUtil.checkPermission(sender, SET_ADMIN_PERMISSION + ".spawn", false, true) || sPlayer.getRank(settlement).isEqualOrSuperiorTo(Rank.MODERATOR)) {
-            if (!settlement.equals(server.getOwner(player.getLocation().getChunk()))) {
+            if (!settlement.equals(server.getOwnerSettlement(player.getLocation().getChunk()))) {
                 SettlementMessenger.sendSettlementMessage(sender, StringUtil.concatString(80, "§c  The settlement §6", settlement.getName(), " §cdoes not own this plot!"));
                 return true;
             }

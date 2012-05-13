@@ -1,5 +1,6 @@
 package net.zetaeta.settlement;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
+import net.zetaeta.bukkit.util.StringUtil;
 import net.zetaeta.settlement.object.ChunkCoordinate;
 import net.zetaeta.settlement.object.Plot;
 import net.zetaeta.settlement.object.Settlement;
@@ -251,15 +253,22 @@ public final class FlatFileIO implements SettlementConstants {
         }
     }
     
-    public static void savePlotV0_0(Plot plot, DataOutputStream dos) throws IOException {
+    public static void savePlotV0_0(Plot plot, ByteArrayOutputStream bos, DataOutputStream dos) throws IOException {
         ChunkCoordinate cc = plot.getCoordinates();
         UUID uid = plot.getWorld().getWorld().getUID();
+//        log.info("Written none: " + bos.size());
         dos.writeLong(uid.getMostSignificantBits());
         dos.writeLong(uid.getLeastSignificantBits());
+//        log.info("Written World UID: " + bos.size());
         dos.writeInt(cc.x);
         dos.writeInt(cc.z);
-        dos.writeUTF(plot.getOwnerPlayer().getName());
+//        log.info("Written coords: " + bos.size());
+        dos.writeUTF(StringUtil.padString(plot.getOwnerPlayer().getName(), 16));
+//        log.info("Written owner name: " + bos.size());
+//        dos.writeUTF(plot.getOwnerPlayer().getName());
         dos.writeInt(plot.getOwnerSettlement().getUid());
+//        log.info("Written owner settlement UID: " + bos.size());
+//        log.info("SAVING: " + plot);
     }
     
     public static Plot loadPlotV0_0(DataInputStream dis) throws IOException {
@@ -267,16 +276,24 @@ public final class FlatFileIO implements SettlementConstants {
         long uid2 = dis.readLong();
         UUID uid = new UUID(uid1, uid2);
         ChunkCoordinate cc = new ChunkCoordinate(dis.readInt(), dis.readInt());
-        String ownerName = dis.readUTF();
+        String ownerName = dis.readUTF().trim();
         int setUid = dis.readInt();
         World world = Bukkit.getWorld(uid);
         SettlementWorld sWorld = server.getWorld(world);
-        Settlement settlement = server.getSettlement(setUid);
+        Settlement settlement;
+        if (setUid != Settlement.WILDERNESS.getUid()) {
+            settlement = server.getSettlement(setUid);
+        }
+        else {
+            settlement = Settlement.WILDERNESS;
+        }
         if (sWorld == null || settlement == null) {
             return null;
         }
         Plot plot = new Plot(sWorld, cc);
-        plot.setOwnerPlayer(ownerName);
+        if (!ownerName.equalsIgnoreCase(SettlementPlayer.NONE.getName())) {
+            plot.setOwnerPlayer(ownerName);
+        }
         plot.setOwnerSettlement(settlement);
         return plot;
     }

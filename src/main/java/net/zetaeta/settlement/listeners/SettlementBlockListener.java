@@ -17,7 +17,7 @@ public class SettlementBlockListener implements Listener, SettlementConstants {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         Settlement plotOwner = null;
-        if ((plotOwner = server.getOwner(event.getBlock().getChunk())) == null) {
+        if ((plotOwner = server.getOwnerSettlement(event.getBlock().getChunk())) == null) {
             return;
         }
         if (plotOwner.isMember(event.getPlayer().getName())) {
@@ -33,7 +33,7 @@ public class SettlementBlockListener implements Listener, SettlementConstants {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         Settlement plotOwner = null;
-        if ((plotOwner = server.getOwner(event.getBlock().getChunk())) == null) {
+        if ((plotOwner = server.getOwnerSettlement(event.getBlock().getChunk())) == null) {
             return;
         }
         if (plotOwner.isMember(event.getPlayer().getName())) {

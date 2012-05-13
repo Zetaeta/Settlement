@@ -55,7 +55,7 @@ public class SettlementPlayer implements SettlementConstants {
     }
     
     private SettlementPlayer() {
-        name = "";
+        name = "NONE";
     }
     
     public SettlementPlayer(Player plr) {

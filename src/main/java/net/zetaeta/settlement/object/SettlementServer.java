@@ -40,19 +40,25 @@ public class SettlementServer implements SettlementConstants {
     }
     
     public void init() {
-      int settlementCount = loadSettlements();
-      log.info("Loaded " + settlementCount + " Settlements!");
-      int playerCount = 0;
-      for (Player player : Bukkit.getOnlinePlayers()) {
-          if (server.getSettlementPlayer(player) == null) {
-              registerPlayer(new SettlementPlayer(player));
-              ++playerCount;
-          }
-      }
-      for (World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
           worlds.put(world, new SettlementWorld(world));
-      }
-      log.info("Loaded " + playerCount + " players!");
+        }
+        int settlementCount = loadSettlements();
+        log.info("Loaded " + settlementCount + " Settlements!");
+        int playerCount = 0;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (server.getSettlementPlayer(player) == null) {
+                registerPlayer(new SettlementPlayer(player));
+                ++playerCount;
+            }
+        }
+        log.info("Loaded " + playerCount + " players!");
+        for (SettlementWorld world : worlds.values()) {
+            for (Chunk chunk : world.getWorld().getLoadedChunks()) {
+                world.loadPlot(new ChunkCoordinate(chunk));
+            }
+        }
+        log.info("Loaded plots!");
     }
     
     public void shutdown() {
@@ -68,6 +74,19 @@ public class SettlementServer implements SettlementConstants {
                 unregisterPlayer(getSettlementPlayer(player));
             }
         }
+        for (SettlementWorld world : worlds.values()) {
+            for (Plot plot : world.getPlots()) {
+//                if (!plot.getChunk().unload()) {
+//                    log.info("FAILED UNLOADING");
+//                }
+//                else {
+//                    log.info("UNLOADED CHUNK: " + plot.getCoordinates());
+//                }
+                world.unloadPlot(plot.getCoordinates());
+            }
+        }
+        
+        log.info("Saved plots");
     }
     
     public void registerSettlement(Settlement settlement) {
@@ -357,26 +376,34 @@ public class SettlementServer implements SettlementConstants {
         settlementsByName.put(newName, settlement);
     }
     
+    public Plot getPlot(WorldCoordinate coords) {
+        return getWorld(coords.world).getPlot(coords);
+    }
     
-    public Settlement getOwner(Chunk chunk) {
-        if (ConfigurationConstants.useChunkOwnershipCacheing) {
-            if (settlementChunkCache == null) {
-                settlementChunkCache = new HashMap<Chunk, Settlement>((int) (ConfigurationConstants.chunkOwnershipCacheSize / 0.75));
-            }
-            if (settlementChunkCache.containsKey(chunk)) {
-                return settlementChunkCache.get(chunk);
-            }
-        }
-            for (Settlement settlement : server.getSettlements()) {
-                if (settlement.ownsChunk(chunk)) {
-                    if (ConfigurationConstants.useChunkOwnershipCacheing) {
-                        settlementChunkCache.put(chunk, settlement);
-                    }
-                    return settlement;
-                }
-            }
-            return null;
+    public Settlement getOwnerSettlement(WorldCoordinate coords) {
+        return getPlot(coords).getOwnerSettlement();
+    }
+    
+    public Settlement getOwnerSettlement(Chunk chunk) {
+        return getOwnerSettlement(new WorldCoordinate(chunk));
+//        if (ConfigurationConstants.useChunkOwnershipCacheing) {
+//            if (settlementChunkCache == null) {
+//                settlementChunkCache = new HashMap<Chunk, Settlement>((int) (ConfigurationConstants.chunkOwnershipCacheSize / 0.75));
+//            }
+//            if (settlementChunkCache.containsKey(chunk)) {
+//                return settlementChunkCache.get(chunk);
+//            }
 //        }
+//            for (Settlement settlement : server.getSettlements()) {
+//                if (settlement.ownsChunk(chunk)) {
+//                    if (ConfigurationConstants.useChunkOwnershipCacheing) {
+//                        settlementChunkCache.put(chunk, settlement);
+//                    }
+//                    return settlement;
+//                }
+//            }
+//            return null;
+////        }
     }
     
     public void clearFromChunkCache(Settlement settlement) {

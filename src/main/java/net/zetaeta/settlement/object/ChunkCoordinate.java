@@ -15,8 +15,8 @@ public class ChunkCoordinate {
     }
 
     public ChunkCoordinate(Chunk chunk) {
-        x = chunk.getX();
-        z = chunk.getZ();
+        x = chunk.getX() >> 2;
+        z = chunk.getZ() >> 2;
     }
     
     public ChunkCoordinate(int x, int y, int z) {
@@ -30,14 +30,18 @@ public class ChunkCoordinate {
     }
     
     public Collection<ChunkCoordinate> getCoordsGroup() {
-        ChunkCoordinate groupBase = new ChunkCoordinate(x >> 2, z >> 2);
+        ChunkCoordinate groupBase = new ChunkCoordinate((x >> 2) << 2, (z >> 2) << 2);
         Collection<ChunkCoordinate> coords = new ArrayList<ChunkCoordinate>(16);
         for (int x=0; x<4; ++x) {
             for (int z=0; z<4; ++z) {
-                coords.add(new ChunkCoordinate(x, z));
+                coords.add(new ChunkCoordinate(groupBase.x + x, groupBase.z + z));
             }
         }
         return coords;
+    }
+    
+    public String toString() {
+        return getClass().getSimpleName() + " at x=" + x + ", z=" + z + "; @" + hashCode();
     }
     
     public boolean equals(Object other) {
