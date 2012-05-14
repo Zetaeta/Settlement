@@ -21,14 +21,25 @@ public class SettlementWorldListener implements Listener, SettlementConstants {
             }
         });
     }
-    
+    boolean log = true;
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkUnload(final ChunkUnloadEvent event) {
-//        log.info("ChunkUnloadEvent: " + event.getEventName());
+        final long time = System.nanoTime();
+        if (log) {
+            System.out.println("Scheduling loading chunk, current time: " + (time));
+        }
+        final boolean logLocal = log;
         SettlementThreadManager.submitAsyncTask(new Runnable() {
             public void run() {
+                if (logLocal) {
+                    System.out.println("Actually loading, current time = " + System.nanoTime() + ", diff = " + (System.nanoTime() - time));
+                }
                 server.getWorld(event.getWorld()).unloadPlot(new ChunkCoordinate(event.getChunk()));
             }
         });
+        if (log) {
+            System.out.println("Scheduled loading chunk, current time: " + System.nanoTime() + ", diff = " + (System.nanoTime() - time));
+            log = false;
+        }
     }
 }

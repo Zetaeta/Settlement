@@ -1,30 +1,157 @@
-package net.zetaeta.settlement;
+package net.zetaeta.settlement.persistence;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
-
-import net.zetaeta.bukkit.util.StringUtil;
-import net.zetaeta.settlement.object.ChunkCoordinate;
-import net.zetaeta.settlement.object.Plot;
-import net.zetaeta.settlement.object.Settlement;
-import net.zetaeta.settlement.object.SettlementData;
-import net.zetaeta.settlement.object.SettlementPlayer;
-import net.zetaeta.settlement.object.SettlementWorld;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public final class FlatFileIO implements SettlementConstants {
-    static Map<World, Collection<ChunkCoordinate>> reusableWorldPlots;
+import net.zetaeta.bukkit.util.StringUtil;
+import net.zetaeta.settlement.FlatFileIO;
+import net.zetaeta.settlement.Rank;
+import net.zetaeta.settlement.SettlementConstants;
+import net.zetaeta.settlement.SettlementPlugin;
+import net.zetaeta.settlement.object.ChunkCoordinate;
+import net.zetaeta.settlement.object.Plot;
+import net.zetaeta.settlement.object.Settlement;
+import net.zetaeta.settlement.object.SettlementData;
+import net.zetaeta.settlement.object.SettlementPlayer;
+import net.zetaeta.settlement.object.SettlementWorld;
+import net.zetaeta.settlement.object.WorldCoordinate;
+
+public class FlatFilePersistence implements PersistenceManager, SettlementConstants {
+
+    @Override
+    public void saveSettlements(Collection<Settlement> settlements) {
+        log.info("Saving Settlements...");
+        File settlementsFile = new File(plugin.getSettlementsFolder(), "settlements.dat");
+        if (!settlementsFile.exists()) {
+            try {
+                settlementsFile.createNewFile();
+            } catch (IOException e) {
+                log.log(Level.SEVERE, "Could not create settlements.dat file!", e);
+                e.printStackTrace();
+                return;
+            }
+        }
+        DataOutputStream dos = null;
+        try {
+            dos = new DataOutputStream(new FileOutputStream(settlementsFile));
+        } catch (FileNotFoundException e) {
+            log.severe("Could not open settlements.dat file!");
+            return;
+        }
+        try {
+            dos.writeInt(SETTLEMENT_FILE_VERSION);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        for (Settlement settlement : settlements) {
+            log.info("Saving settlement " + settlement.getName());
+            try {
+                saveSettlementV0_0(settlement, dos);
+            } catch (IOException e) {
+                log.log(Level.SEVERE, "Error while saving Settlement " + settlement.getName() + "!", e);
+                e.printStackTrace();
+            }
+            try {
+                dos.writeChar('\n');
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            dos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File oldFile = new File(plugin.getSavedDataFolder(), "settlements.dat");
+        if (oldFile.exists()) {
+            oldFile.delete();
+        }
+    }
+
+    @Override
+    public void savePlayer(SettlementPlayer player) {
+        
+    }
+
+    @Override
+    public void savePlot(Plot plot) {
+        
+    }
+
+    @Override
+    public Collection<Settlement> loadSettlements() {
+        return null;
+    }
+
+    @Override
+    public SettlementPlayer loadPlayer(String name) {
+        File playerFile = new File(SettlementPlugin.plugin.getPlayersFolder(), name + ".dat");
+        if (!playerFile.exists()) {
+            try {
+                playerFile.createNewFile();
+            } catch (IOException e) {
+                log.log(Level.SEVERE, "Could not create data file for player " + name, e);
+                e.printStackTrace();
+            }
+            return null;
+        }
+        DataInputStream dis = null;
+        try {
+            dis = new DataInputStream(new FileInputStream(playerFile));
+        } catch (FileNotFoundException e) {
+            log.log(Level.SEVERE, "Could not find data file for player " + name, e);
+            e.printStackTrace();
+            return null;
+        }
+        try {
+            int fileVersion = dis.readInt();
+            if (fileVersion == 0) {
+                loadPlayerV0_0(this, dis);
+            }
+            else {
+                log.severe("Error reading from player file " + name + "Unsupported format version: " + fileVersion);
+                if (player != null) {
+                    player.sendMessage("§4Error occurred loading Settlement info! Please report this to your administrator!");
+                }
+                return;
+            }
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Error reading from data file of player " + name, e);
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                dis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
+    @Override
+    public Plot loadPlot(WorldCoordinate coord) {
+        return null;
+    }
+    
+static Map<World, Collection<ChunkCoordinate>> reusableWorldPlots;
     
     public static final int SETTLEMENT_FILE_VERSION = 0;
     public static final int PLAYER_FILE_VERSION = 0;

@@ -2,18 +2,25 @@ package net.zetaeta.settlement;
 
 public class ConfigurationConstants {
     
-//    public static boolean useChunkOwnershipCacheing = true;
-    public static boolean useMultithreading = true;
+    public static boolean useMultithreading     = true;
     public static boolean multithreadedShutdown = false;
 
     public static int plotsPerPlayer = 16;
-    public static int chunkOwnershipCacheSize = 50;
 
-    public static String outsiderName = "Outsider";
-    public static String memberName = "Member";
-    public static String modName = "Moderator";
-    public static String ownerName = "Owner";
-    public static String wildernessMessage = "§b~ §6Wilderness";
-    public static String denyBuildMessage = "§cYou are not allowed to build in the Settlement §6%s";
-    public static String denyBreakMessage = "§cYou are not allowed to destroy in the Settlement §6%s";
+    public static String outsiderName       = "Outsider";
+    public static String allyName           = "Ally";
+    public static String memberName         = "Member";
+    public static String modName            = "Moderator";
+    public static String ownerName          = "Owner";
+    public static String wildernessMessage  = "§b~ §6Wilderness";
+    public static String denyBuildMessage   = "§cYou are not allowed to build in the Settlement §6%s";
+    public static String denyBreakMessage   = "§cYou are not allowed to destroy in the Settlement §6%s";
+    public static String plot_outsiderName;
+    public static String plot_settlementAllyName;
+    public static String plot_settlementMemberName;
+    public static String plot_friendName;
+    public static String plot_moderatorName;
+    public static String plot_ownerName;
+    public static String plot_settlementModeratorName;
+    public static String plot_settlementOwnerName;
 }

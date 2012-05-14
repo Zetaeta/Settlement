@@ -1,8 +1,15 @@
 package net.zetaeta.settlement.object;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.zetaeta.settlement.PlotRank;
 import net.zetaeta.settlement.SettlementConstants;
 
 import org.bukkit.Chunk;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
 public class Plot implements SettlementConstants {
     private ChunkCoordinate location;
@@ -10,13 +17,14 @@ public class Plot implements SettlementConstants {
     private Settlement ownerSettlement;
     private String ownerPlayerName;
     private boolean inUse = true;
+    private Set<PlotPermission> permissions = new HashSet<PlotPermission>();
+    private Table<PlotRank, PermissionType, Boolean> runtimePermissions = HashBasedTable.create();
     
     public Plot(SettlementWorld world, ChunkCoordinate cc) {
         this.world = world;
         this.location = cc;
         ownerSettlement = Settlement.WILDERNESS;
         ownerPlayerName = SettlementPlayer.NONE.getName();
-//        log.info("Creating plot " + toString());
     }
     
     public Chunk getChunk() {
@@ -64,6 +72,15 @@ public class Plot implements SettlementConstants {
     
     public boolean isInUse() {
         return inUse;
+    }
+    
+    public boolean hasPermission(PlotRank rank, PermissionType permission) {
+        if (runtimePermissions.contains(rank, permission)) {
+            return runtimePermissions.get(rank, permission);
+        }
+        else {
+            return rank.getDefault(permission);
+        }
     }
     
     public String toString() {

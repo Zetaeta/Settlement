@@ -24,6 +24,9 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
 /**
  * Represents a settlement, a group of people with an owner and moderators.
  * <p />
@@ -56,7 +59,7 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
     @ToBeSaved
 //    private Collection<Chunk> plots = new HashSet<Chunk>();
     private Collection<Plot> plots = new HashSet<Plot>();
-    Map<World, Collection<Chunk>> worldPlots;// = new HashMap<World, Collection<Chunk>>();
+//    Map<World, Collection<Chunk>> worldPlots;// = new HashMap<World, Collection<Chunk>>();
     @ToBeSaved
     private Collection<String> invitations = new HashSet<String>(); // Names of players invited to the faction.
     private SettlementPlayer owner;
@@ -66,6 +69,8 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
     private int allowedPlots;
     private String playerListCache;
     private boolean updatePLCache = true;
+    private Set<SettlementPermission> permissions = new HashSet<SettlementPermission>();
+    private Table<Rank, PermissionType, Boolean> runtimePermission = HashBasedTable.create();
     
     static {
         WILDERNESS = new Settlement("Wilderness");
@@ -92,13 +97,7 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
         members.add(ownerName);
         onlineMembers.add(owner);
         this.UID = UID;
-//        settlementsByName.put(name, this);
-//        settlementsByUID.put(UID, this);
         allowedPlots = ConfigurationConstants.plotsPerPlayer;
-//        server.registerSettlement(this);
-//        if (ConfigurationConstants.useSettlementWorldCacheing && settlementsByWorld == null) {
-//            settlementsByWorld = new HashMap<World, Collection<Settlement>>();
-//        }
     }
     
     /**
@@ -109,12 +108,13 @@ public class Settlement implements SettlementConstants, Comparable<Settlement> {
         this.name = name;
         this.UID = uid;
         slogan = "§e  Use /settlement slogan <slogan> to set the slogan!";
-//        server.registerSettlement(this);
-//        settlementsByName.put(name, this);
-//        settlementsByUID.put(UID, this);
-//        if (ConfigurationConstants.useSettlementWorldCacheing && settlementsByWorld == null) {
-//            settlementsByWorld = new HashMap<World, Collection<Settlement>>();
-//        }
+        calculatePermissions();
+    }
+    
+    protected void calculatePermissions() {
+        for (SettlementPermission perm : permissions) {
+            runtimePermission.put(perm.getRank(), perm.getType(), perm.value());
+        }
     }
 
     /**

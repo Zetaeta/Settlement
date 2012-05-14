@@ -11,6 +11,7 @@ import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -63,4 +64,8 @@ public class SettlementPlayerListener implements Listener, SettlementConstants {
         SettlementMessenger.sendPlotChangeMessage(event.getPlayer(), owner);
     }
     
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerBukkitFill(PlayerBucketFillEvent event) {
+        
+    }
 }

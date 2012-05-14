@@ -3,9 +3,10 @@ package net.zetaeta.settlement;
 
 public enum Rank {
     OUTSIDER(0, ConfigurationConstants.outsiderName),
-    MEMBER(1, ConfigurationConstants.memberName), 
-    MODERATOR(2, ConfigurationConstants.modName), 
-    OWNER(3, ConfigurationConstants.ownerName);
+    ALLY(1, ConfigurationConstants.allyName),
+    MEMBER(2, ConfigurationConstants.memberName), 
+    MODERATOR(3, ConfigurationConstants.modName), 
+    OWNER(4, ConfigurationConstants.ownerName);
     
     private int priority;
     private String name;
@@ -36,10 +37,12 @@ public enum Rank {
         case 0 :
             return OUTSIDER;
         case 1 :
-            return MEMBER;
+            return ALLY;
         case 2 :
-            return MODERATOR;
+            return MEMBER;
         case 3 :
+            return MODERATOR;
+        case 4 :
             return OWNER;
         default :
             return null;
