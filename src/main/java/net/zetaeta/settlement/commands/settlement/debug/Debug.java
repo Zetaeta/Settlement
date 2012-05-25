@@ -5,10 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.util.Util;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.util.SettlementUtil;
+import net.zetaeta.util.Util;
 
 import org.bukkit.command.CommandSender;
 

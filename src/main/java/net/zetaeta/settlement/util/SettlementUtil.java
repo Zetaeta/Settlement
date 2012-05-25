@@ -1,11 +1,11 @@
 package net.zetaeta.settlement.util;
 
-import net.zetaeta.bukkit.commands.CommandArguments;
-import net.zetaeta.bukkit.util.PermissionUtil;
-import net.zetaeta.bukkit.util.StringUtil;
+import net.zetaeta.bukkit.util.commands.CommandArguments;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.object.Settlement;
 import net.zetaeta.settlement.object.SettlementPlayer;
+import net.zetaeta.util.PermissionUtil;
+import net.zetaeta.util.StringUtil;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

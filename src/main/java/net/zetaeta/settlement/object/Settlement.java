@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.bukkit.util.StringUtil;
 import net.zetaeta.settlement.ConfigurationConstants;
 import net.zetaeta.settlement.Rank;
 import net.zetaeta.settlement.SettlementConstants;
@@ -17,6 +16,7 @@ import net.zetaeta.settlement.ToBeSaved;
 import net.zetaeta.settlement.commands.settlement.Info;
 import net.zetaeta.settlement.util.SettlementMessenger;
 import net.zetaeta.settlement.util.SettlementUtil;
+import net.zetaeta.util.StringUtil;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;

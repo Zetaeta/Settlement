@@ -19,6 +19,7 @@ import java.util.logging.Level;
 
 import net.zetaeta.settlement.ConfigurationConstants;
 import net.zetaeta.settlement.FlatFileIO;
+import net.zetaeta.settlement.SettlementAPI;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.SettlementPlugin;
 
@@ -76,13 +77,7 @@ public class SettlementServer implements SettlementConstants {
         }
         for (SettlementWorld world : worlds.values()) {
             for (Plot plot : world.getPlots()) {
-//                if (!plot.getChunk().unload()) {
-//                    log.info("FAILED UNLOADING");
-//                }
-//                else {
-//                    log.info("UNLOADED CHUNK: " + plot.getCoordinates());
-//                }
-                world.unloadPlot(plot.getCoordinates());
+                world.unloadPlotAt(plot.getCoordinates());
             }
         }
         
@@ -175,7 +170,7 @@ public class SettlementServer implements SettlementConstants {
 //     */
 //    public Collection<Settlement> getSettlementsIn(World world) {
 //        if (ConfigurationConstants.useSettlementWorldCacheing) {
-//            return null;//TODO settlementsByWorld.get(world);
+//            return null;// settlementsByWorld.get(world);
 //        }
 //        else {
 //            Collection<Settlement> worldSets = new HashSet<Settlement>();
@@ -237,122 +232,124 @@ public class SettlementServer implements SettlementConstants {
      * @return number of settlements loaded.
      */
     public int loadSettlements() {
-        log.info("Loading Settlements...");
-        File settlementsFile = new File(plugin.getSettlementsFolder(), "settlements.dat");
-        if (!settlementsFile.exists()) {
-            settlementsFile = new File(plugin.getSavedDataFolder(), "settlements.dat");
-            try {
-                settlementsFile.createNewFile();
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Could not create settlements.dat file!", e);
-                e.printStackTrace();
-            }
-            return 0;
-        }
-        DataInputStream dis = null;
-        try {
-            dis = new DataInputStream(new FileInputStream(settlementsFile));
-        } catch (FileNotFoundException e) {
-            log.severe("Could not open settlements.dat file!");
-            return 0;
-        }
-        
-        int count = 0;
-        try {
-            if (dis.available() > 0) {
-                log.info("Bytes left to read: " + dis.available());
-                int version = dis.readInt();
-                log.info("Read version: " + version);
-                if (version == 0) {
-                    while(dis.available() > 0) {
-                        log.info("Bytes left to read: " + dis.available());
-                        Settlement set = null;
-                        try {
-                            set = FlatFileIO.loadSettlementV0_0(dis);
-                            registerSettlement(set);
-                            ++count;
-                            log.info("Loaded settlement " + set.getName());
-                        }
-                        catch (Throwable thrown) {
-                            log.severe("Error occurred while loading settlement " + (set == null ? "" : set.getName()) + ": " + thrown.getClass().getName());
-                            log.log(Level.SEVERE, "Error loading settlements!", thrown);
-                            while (dis.readChar() != '\n') {
-                                
-                            }
-                        }
-                    }
-                }
-                else {
-                    log.severe("Error reading from settlements.dat: Unsupported format version: " + version);
-                }
-            }
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while loading Settlements!", e);
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                dis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return count;
+        return SettlementAPI.getPersistenceManager().loadSettlements().size();
+//        log.info("Loading Settlements...");
+//        File settlementsFile = new File(plugin.getSettlementsFolder(), "settlements.dat");
+//        if (!settlementsFile.exists()) {
+//            settlementsFile = new File(plugin.getSavedDataFolder(), "settlements.dat");
+//            try {
+//                settlementsFile.createNewFile();
+//            } catch (IOException e) {
+//                log.log(Level.SEVERE, "Could not create settlements.dat file!", e);
+//                e.printStackTrace();
+//            }
+//            return 0;
+//        }
+//        DataInputStream dis = null;
+//        try {
+//            dis = new DataInputStream(new FileInputStream(settlementsFile));
+//        } catch (FileNotFoundException e) {
+//            log.severe("Could not open settlements.dat file!");
+//            return 0;
+//        }
+//        
+//        int count = 0;
+//        try {
+//            if (dis.available() > 0) {
+//                log.info("Bytes left to read: " + dis.available());
+//                int version = dis.readInt();
+//                log.info("Read version: " + version);
+//                if (version == 0) {
+//                    while(dis.available() > 0) {
+//                        log.info("Bytes left to read: " + dis.available());
+//                        Settlement set = null;
+//                        try {
+//                            set = FlatFileIO.loadSettlementV0_0(dis);
+//                            registerSettlement(set);
+//                            ++count;
+//                            log.info("Loaded settlement " + set.getName());
+//                        }
+//                        catch (Throwable thrown) {
+//                            log.severe("Error occurred while loading settlement " + (set == null ? "" : set.getName()) + ": " + thrown.getClass().getName());
+//                            log.log(Level.SEVERE, "Error loading settlements!", thrown);
+//                            while (dis.readChar() != '\n') {
+//                                
+//                            }
+//                        }
+//                    }
+//                }
+//                else {
+//                    log.severe("Error reading from settlements.dat: Unsupported format version: " + version);
+//                }
+//            }
+//        } catch (IOException e) {
+//            log.log(Level.SEVERE, "Error while loading Settlements!", e);
+//            e.printStackTrace();
+//        }
+//        finally {
+//            try {
+//                dis.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return count;
     }
 
     /**
      * Saves all Settlements to ./Settlement/data/settlements.dat
      */
     public void saveSettlements() {
-        log.info("Saving Settlements...");
-        File settlementsFile = new File(plugin.getSettlementsFolder(), "settlements.dat");
-        if (!settlementsFile.exists()) {
-            try {
-                settlementsFile.createNewFile();
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Could not create settlements.dat file!", e);
-                e.printStackTrace();
-                return;
-            }
-        }
-        DataOutputStream dos = null;
-        try {
-            dos = new DataOutputStream(new FileOutputStream(settlementsFile));
-        } catch (FileNotFoundException e) {
-            log.severe("Could not open settlements.dat file!");
-            return;
-        }
-        try {
-            dos.writeInt(FlatFileIO.SETTLEMENT_FILE_VERSION);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        for (Iterator<Settlement> settlements = settlementsByUID.values().iterator(); settlements.hasNext();) {
-            Settlement settlement = settlements.next();
-            log.info("Saving settlement " + settlement.getName());
-            try {
-                FlatFileIO.saveSettlementV0_0(settlement, dos);
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Error while saving Settlement " + settlement.getName() + "!", e);
-                e.printStackTrace();
-            }
-            if (settlements.hasNext()) {
-                try {
-                    dos.writeChar('\n');
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        try {
-            dos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        File oldFile = new File(plugin.getSavedDataFolder(), "settlements.dat");
-        if (oldFile.exists()) {
-            oldFile.delete();
-        }
+        SettlementAPI.getPersistenceManager().saveSettlements(getSettlements());
+//        log.info("Saving Settlements...");
+//        File settlementsFile = new File(plugin.getSettlementsFolder(), "settlements.dat");
+//        if (!settlementsFile.exists()) {
+//            try {
+//                settlementsFile.createNewFile();
+//            } catch (IOException e) {
+//                log.log(Level.SEVERE, "Could not create settlements.dat file!", e);
+//                e.printStackTrace();
+//                return;
+//            }
+//        }
+//        DataOutputStream dos = null;
+//        try {
+//            dos = new DataOutputStream(new FileOutputStream(settlementsFile));
+//        } catch (FileNotFoundException e) {
+//            log.severe("Could not open settlements.dat file!");
+//            return;
+//        }
+//        try {
+//            dos.writeInt(FlatFileIO.SETTLEMENT_FILE_VERSION);
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+//        for (Iterator<Settlement> settlements = settlementsByUID.values().iterator(); settlements.hasNext();) {
+//            Settlement settlement = settlements.next();
+//            log.info("Saving settlement " + settlement.getName());
+//            try {
+//                FlatFileIO.saveSettlementV0_0(settlement, dos);
+//            } catch (IOException e) {
+//                log.log(Level.SEVERE, "Error while saving Settlement " + settlement.getName() + "!", e);
+//                e.printStackTrace();
+//            }
+//            if (settlements.hasNext()) {
+//                try {
+//                    dos.writeChar('\n');
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        try {
+//            dos.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        File oldFile = new File(plugin.getSavedDataFolder(), "settlements.dat");
+//        if (oldFile.exists()) {
+//            oldFile.delete();
+//        }
     }
 
     /**

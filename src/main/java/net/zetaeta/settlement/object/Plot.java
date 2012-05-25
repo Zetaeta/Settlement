@@ -27,6 +27,10 @@ public class Plot implements SettlementConstants {
         ownerPlayerName = SettlementPlayer.NONE.getName();
     }
     
+    public Plot(WorldCoordinate coord) {
+        this(coord.getSettlementWorld(), coord);
+    }
+
     public Chunk getChunk() {
         return world.getChunk(location);
     }

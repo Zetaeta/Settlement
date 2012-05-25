@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a LocalCommand that can have subcommands added to it. While all subcommands have the {@link net.zetaeta.settlement.commands.SettlementCommand#registerSubCommand(net.zetaeta.bukkit.commands.local.LocalCommand)}
+ * Represents a LocalCommand that can have subcommands added to it. While all subcommands have the {@link net.zetaeta.settlement.commands.SettlementCommand#registerSubCommand(net.zetaeta.bukkit.util.commands.local.LocalCommand)}
  * method, only some actually check for these, and these should be annotated with this annotation.
  * @author Daniel
  *

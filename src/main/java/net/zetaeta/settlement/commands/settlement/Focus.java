@@ -1,14 +1,14 @@
 package net.zetaeta.settlement.commands.settlement;
 
-import net.zetaeta.bukkit.commands.CommandArguments;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.util.Util;
+import net.zetaeta.bukkit.util.commands.CommandArguments;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;
 import net.zetaeta.settlement.object.SettlementPlayer;
 import net.zetaeta.settlement.util.SettlementMessenger;
 import net.zetaeta.settlement.util.SettlementUtil;
 import net.zetaeta.settlement.util.SubCommandable;
+import net.zetaeta.util.Util;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

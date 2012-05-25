@@ -1,7 +1,7 @@
 package net.zetaeta.settlement.commands.plot;
 
-import net.zetaeta.bukkit.commands.CommandArguments;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
+import net.zetaeta.bukkit.util.commands.CommandArguments;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.object.Settlement;
 import net.zetaeta.settlement.object.SettlementPlayer;

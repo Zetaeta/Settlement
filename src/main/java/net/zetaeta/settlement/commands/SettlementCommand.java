@@ -4,13 +4,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.zetaeta.bukkit.commands.local.AbstractLocalCommandExecutor;
-import net.zetaeta.bukkit.commands.local.Command;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.commands.local.LocalCommandExecutor;
-import net.zetaeta.bukkit.util.Util;
+import net.zetaeta.bukkit.util.commands.local.AbstractLocalCommandExecutor;
+import net.zetaeta.bukkit.util.commands.local.Command;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
+import net.zetaeta.bukkit.util.commands.local.LocalCommandExecutor;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.util.SettlementMessenger;
+import net.zetaeta.util.Util;
 
 import org.bukkit.command.CommandSender;
 

@@ -1,10 +1,12 @@
 package net.zetaeta.settlement.object;
 
+import net.zetaeta.settlement.SettlementConstants;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class WorldCoordinate extends ChunkCoordinate {
+public class WorldCoordinate extends ChunkCoordinate implements SettlementConstants {
     public final World world;
     
     public WorldCoordinate(Location location) {
@@ -25,6 +27,15 @@ public class WorldCoordinate extends ChunkCoordinate {
     public WorldCoordinate(World world, int x, int z) {
         super(x, z);
         this.world = world;
+    }
+    
+    public WorldCoordinate(World world, ChunkCoordinate coord) {
+        super(coord.x, coord.z);
+        this.world = world;
+    }
+    
+    public SettlementWorld getSettlementWorld() {
+        return server.getWorld(world);
     }
     
 //    public World getWorld() {

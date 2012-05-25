@@ -3,14 +3,14 @@ package net.zetaeta.settlement.commands;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import net.zetaeta.bukkit.commands.CommandArguments;
-import net.zetaeta.bukkit.commands.local.ExecutorWrapper;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.commands.local.LocalCommandExecutor;
-import net.zetaeta.bukkit.util.PermissionUtil;
+import net.zetaeta.bukkit.util.commands.CommandArguments;
+import net.zetaeta.bukkit.util.commands.local.ExecutorWrapper;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
+import net.zetaeta.bukkit.util.commands.local.LocalCommandExecutor;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.SettlementThreadManager;
 import net.zetaeta.settlement.util.SettlementMessenger;
+import net.zetaeta.util.PermissionUtil;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

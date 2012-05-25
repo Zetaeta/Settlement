@@ -1,9 +1,9 @@
 package net.zetaeta.settlement.util;
 
-import net.zetaeta.bukkit.util.StringUtil;
 import net.zetaeta.settlement.ConfigurationConstants;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.object.Settlement;
+import net.zetaeta.util.StringUtil;
 
 import org.bukkit.command.CommandSender;
 

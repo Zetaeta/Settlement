@@ -7,6 +7,8 @@ import net.zetaeta.settlement.object.Settlement;
 import net.zetaeta.settlement.object.SettlementPlayer;
 import net.zetaeta.settlement.object.WorldCoordinate;
 
+import org.bukkit.entity.Player;
+
 public interface PersistenceManager {
     
     public void saveSettlements(Collection<Settlement> settlements);
@@ -17,7 +19,7 @@ public interface PersistenceManager {
     
     public Collection<Settlement> loadSettlements();
     
-    public SettlementPlayer loadPlayer(String name);
+    public SettlementPlayer loadPlayer(Player player);
     
-    public Plot loadPlot(WorldCoordinate coord);
+    public Collection<Plot> loadPlots(WorldCoordinate coord);
 }

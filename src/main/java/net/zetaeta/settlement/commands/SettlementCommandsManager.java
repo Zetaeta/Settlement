@@ -1,6 +1,6 @@
 package net.zetaeta.settlement.commands;
 
-import static net.zetaeta.bukkit.util.Util.removeFirstIndex;
+import static net.zetaeta.util.Util.removeFirstIndex;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -12,11 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.bukkit.commands.DynamicCommandExecutor;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.commands.local.LocalCommandExecutor;
-import net.zetaeta.bukkit.util.ReflectionUtil;
-import net.zetaeta.bukkit.util.Util;
+import net.zetaeta.bukkit.util.commands.DynamicCommandExecutor;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
+import net.zetaeta.bukkit.util.commands.local.LocalCommandExecutor;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.SettlementThreadManager;
 import net.zetaeta.settlement.commands.settlement.Bypass;
@@ -34,6 +32,8 @@ import net.zetaeta.settlement.commands.settlement.Spawn;
 import net.zetaeta.settlement.commands.settlement.Usage;
 import net.zetaeta.settlement.commands.settlement.debug.Debug;
 import net.zetaeta.settlement.util.SettlementMessenger;
+import net.zetaeta.util.ReflectionUtil;
+import net.zetaeta.util.Util;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -84,7 +84,7 @@ public class SettlementCommandsManager extends DynamicCommandExecutor implements
      * @return Whether command completes (unused).
      */
     
-    @net.zetaeta.bukkit.commands.Command(value = "settlement",
+    @net.zetaeta.bukkit.util.commands.Command(value = "settlement",
                                             aliases = {"s", "set"},
                                             usage = "",
                                             description = ""
@@ -154,7 +154,7 @@ public class SettlementCommandsManager extends DynamicCommandExecutor implements
         for (Method m : executorClass.getDeclaredMethods()) {
             for (Annotation a : m.getAnnotations()) {
             }
-            if (m.isAnnotationPresent(net.zetaeta.bukkit.commands.local.Command.class)) {
+            if (m.isAnnotationPresent(net.zetaeta.bukkit.util.commands.local.Command.class)) {
                 registered.add(registerSubCommand(new SettlementExecutorWrapper(this, executor, m)));
             }
             else {

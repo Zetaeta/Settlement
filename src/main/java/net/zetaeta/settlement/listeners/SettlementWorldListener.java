@@ -34,7 +34,7 @@ public class SettlementWorldListener implements Listener, SettlementConstants {
                 if (logLocal) {
                     System.out.println("Actually loading, current time = " + System.nanoTime() + ", diff = " + (System.nanoTime() - time));
                 }
-                server.getWorld(event.getWorld()).unloadPlot(new ChunkCoordinate(event.getChunk()));
+                server.getWorld(event.getWorld()).unloadPlotAt(new ChunkCoordinate(event.getChunk()));
             }
         });
         if (log) {

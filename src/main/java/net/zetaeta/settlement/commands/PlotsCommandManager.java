@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.zetaeta.bukkit.commands.DynamicCommandExecutor;
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.commands.local.LocalCommandExecutor;
-import net.zetaeta.bukkit.util.Util;
+import net.zetaeta.bukkit.util.commands.DynamicCommandExecutor;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
+import net.zetaeta.bukkit.util.commands.local.LocalCommandExecutor;
 import net.zetaeta.settlement.SettlementConstants;
 import net.zetaeta.settlement.util.SettlementMessenger;
+import net.zetaeta.util.Util;
 
 import org.bukkit.command.CommandSender;
 
@@ -84,7 +84,7 @@ public class PlotsCommandManager extends DynamicCommandExecutor implements Local
         for (Method m : executorClass.getDeclaredMethods()) {
             for (Annotation a : m.getAnnotations()) {
             }
-            if (m.isAnnotationPresent(net.zetaeta.bukkit.commands.local.Command.class)) {
+            if (m.isAnnotationPresent(net.zetaeta.bukkit.util.commands.local.Command.class)) {
                 registered.add(registerSubCommand(new SettlementExecutorWrapper(this, executor, m)));
             }
             else {

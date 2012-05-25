@@ -80,83 +80,11 @@ public class SettlementPlayer implements SettlementConstants {
 //    }
     
     protected void loadFromFile() {
-        File playerFile = new File(SettlementPlugin.plugin.getPlayersFolder(), name + ".dat");
-        if (!playerFile.exists()) {
-            try {
-                playerFile.createNewFile();
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Could not create data file for player " + name, e);
-                e.printStackTrace();
-            }
-            return;
-        }
-        DataInputStream dis = null;
-        try {
-            dis = new DataInputStream(new FileInputStream(playerFile));
-        } catch (FileNotFoundException e) {
-            log.log(Level.SEVERE, "Could not find data file for player " + name, e);
-            e.printStackTrace();
-            return;
-        }
-        try {
-            int fileVersion = dis.readInt();
-            if (fileVersion == 0) {
-                FlatFileIO.loadPlayerV0_0(this, dis);
-            }
-            else {
-                log.severe("Error reading from player file " + name + "Unsupported format version: " + fileVersion);
-                if (player != null) {
-                    player.sendMessage("§4Error occurred loading Settlement info! Please report this to your administrator!");
-                }
-                return;
-            }
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Error reading from data file of player " + name, e);
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                dis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        
     }
     
     protected void saveToFile() {
-        File playerFile = new File(SettlementPlugin.plugin.getPlayersFolder(), name + ".dat");
-        try {
-            playerFile.createNewFile();
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Could not create data file for player " + name, e);
-            e.printStackTrace();
-        }
-        DataOutputStream dos = null;
-        try {
-            dos = new DataOutputStream(new FileOutputStream(playerFile));
-        } catch (FileNotFoundException e) {
-            log.log(Level.SEVERE, "Could not find data file for player " + name, e);
-            e.printStackTrace();
-            try {
-                dos.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-            return;
-        }
-        try {
-            FlatFileIO.savePlayerV0_0(this, dos);
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Error occurred during saving of player " + name, e);
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                dos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        
     }
     
     @Override

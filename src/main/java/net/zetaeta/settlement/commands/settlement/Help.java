@@ -3,10 +3,10 @@ package net.zetaeta.settlement.commands.settlement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import net.zetaeta.bukkit.commands.local.LocalCommand;
-import net.zetaeta.bukkit.util.PermissionUtil;
+import net.zetaeta.bukkit.util.commands.local.LocalCommand;
 import net.zetaeta.settlement.commands.SettlementCommand;
 import net.zetaeta.settlement.util.SettlementMessenger;
+import net.zetaeta.util.PermissionUtil;
 
 import org.bukkit.command.CommandSender;
 

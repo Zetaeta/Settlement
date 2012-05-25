@@ -6,14 +6,16 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.zetaeta.bukkit.ManagedJavaPlugin;
-import net.zetaeta.bukkit.commands.CommandsManager;
-import net.zetaeta.bukkit.configuration.PluginConfiguration;
+import net.zetaeta.bukkit.util.ManagedJavaPlugin;
+import net.zetaeta.bukkit.util.commands.CommandsManager;
+import net.zetaeta.bukkit.util.configuration.PluginConfiguration;
 import net.zetaeta.settlement.commands.SettlementCommandsManager;
 import net.zetaeta.settlement.listeners.SettlementBlockListener;
 import net.zetaeta.settlement.listeners.SettlementPlayerListener;
 import net.zetaeta.settlement.listeners.SettlementWorldListener;
 import net.zetaeta.settlement.object.SettlementServer;
+import net.zetaeta.settlement.persistence.FlatFilePersistence;
+import net.zetaeta.settlement.persistence.PersistenceManager;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -26,6 +28,7 @@ public class SettlementPlugin extends ManagedJavaPlugin {
     private CommandsManager commandsManager;
     protected SettlementCommandsManager sCommandExec;
     private SettlementServer server;
+    private PersistenceManager persistenceManager;
     
     /**
      * Contains the unloading procedure for the plugin.
@@ -55,6 +58,7 @@ public class SettlementPlugin extends ManagedJavaPlugin {
         plugin = this;
         log.info("LOADING...");
         SettlementThreadManager.init();
+        persistenceManager = new FlatFilePersistence();
         server = new SettlementServer(this);
         Future<?> settlementLoader = SettlementThreadManager.submitAsyncTask(new Runnable() {
             public void run() {
@@ -119,5 +123,9 @@ public class SettlementPlugin extends ManagedJavaPlugin {
     
     public SettlementServer getSettlementServer() {
         return server;
+    }
+    
+    public PersistenceManager getPersistenceManager() {
+        return persistenceManager;
     }
 }
